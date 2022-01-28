@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package hello.v1;
-option go_package = "";
+option go_package = "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1";
 
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -17,7 +17,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
         };
         license: {
             name: "AGPLv3";
-            url: "";
+            url: "https://gitlab.com/insanitywholesale/go-grpc-microservice-template/-/blob/main/LICENSE";
         };
     };
 
@@ -27,21 +27,25 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     produces: "application/json";
 };
 
-service BookDir {
-	rpc HelloMessageRequest(Empty) returns (HelloResponse) {
+service HelloService {
+	rpc SayHello(Empty) returns (HelloResponse) {
 		option (google.api.http) = {
 			get: "/api/v1/hello"
 		};
 	};
-	rpc HelloCustomMessageRequest(Empty) returns (HelloResponse) {
+	rpc SayCustomHello(HelloRequest) returns (HelloResponse) {
 		option (google.api.http) = {
 			get: "/api/v1/hello/{word}"
 		};
 	};
 };
 
+message HelloRequest {
+	string custom_word = 1;
+};
+
 message HelloResponse {
-	string Message = 1;
+	string hello_word = 1;
 };
 
 message Empty {};
