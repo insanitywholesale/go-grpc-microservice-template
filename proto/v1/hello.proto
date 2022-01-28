@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package hello.v1;
+option go_package = "";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Hello";
+        version: "0.0.1";
+        contact: {
+            name: "inherently";
+            url: "https://inherently.xyz";
+            email: "pepitsizous@zoho.com";
+        };
+        license: {
+            name: "AGPLv3";
+            url: "";
+        };
+    };
+
+    schemes: HTTP;
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
+service BookDir {
+	rpc HelloMessageRequest(Empty) returns (HelloResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/hello"
+		};
+	};
+	rpc HelloCustomMessageRequest(Empty) returns (HelloResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/hello/{word}"
+		};
+	};
+};
+
+message HelloResponse {
+	string Message = 1;
+};
+
+message Empty {};
