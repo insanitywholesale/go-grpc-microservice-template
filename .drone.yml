@@ -1,3 +1,4 @@
+#TODO: make better
 kind: pipeline
 name: default
 
@@ -5,6 +6,8 @@ steps:
   - name: go-grpc-microservice
     image: golang
     commands:
-      - go get -v
-      - go build -v
-      - go test -v
+      - go fmt
+      - go get
+      - go vet
+      - go build
+      - go test
