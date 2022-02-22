@@ -1,7 +1,7 @@
 .PHONY: getdeps protos gorelease
 
 getdeps:
-	type protoc
+	/bin/sh -c 'type protoc'
 	export GO111MODULE=on
 	go get -u -v google.golang.org/protobuf/cmd/protoc-gen-go
 	go get -u -v google.golang.org/grpc/cmd/protoc-gen-go-grpc
@@ -14,9 +14,12 @@ getdeps:
 
 protos:
 	protoc -I ./proto/ -I third_party/googleapis -I third_party/grpc-gateway \
-	--go_out=. --go_opt=module=gitlab.com/insanitywholesale/go-grpc-microservice-template \
-	--go-grpc_out=. --go-grpc_opt=module=gitlab.com/insanitywholesale/go-grpc-microservice-template \
-	--openapiv2_out=./openapiv2 --openapiv2_opt logtostderr=true \
+	--go_out=./proto \
+	--go_opt paths=source_relative \
+	--go-grpc_out=./proto \
+	--go-grpc_opt paths=source_relative \
+	--openapiv2_out=./openapiv2 \
+	--openapiv2_opt logtostderr=true \
 	--grpc-gateway_out ./proto \
 	--grpc-gateway_opt logtostderr=true \
 	--grpc-gateway_opt paths=source_relative \
