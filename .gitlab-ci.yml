@@ -11,11 +11,13 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
-  - test
-  - build
+  - simple
+  #- test
+  #- build
 
 format:
-  stage: test
+  #stage: test
+  stage: simple
   script:
     - go fmt
     - go get
@@ -27,10 +29,10 @@ format:
     #- go vet $(go list ./... | grep -v /vendor/)
     #- go test -race $(go list ./... | grep -v /vendor/)
 
-compile:
-  stage: build
-  script:
-    - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/go-grpc-microservice-template
-  artifacts:
-    paths:
-      - go-grpc-microservice-template
+#compile:
+#  stage: build
+#  script:
+#    - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/go-grpc-microservice-template
+#  artifacts:
+#    paths:
+#      - go-grpc-microservice-template
