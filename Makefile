@@ -1,5 +1,8 @@
 .PHONY: getdeps protos gorelease
 
+checkformat:
+	diff -u <(echo -n) <(gofmt -d ./)
+
 getdeps:
 	/bin/sh -c 'type protoc'
 	export GO111MODULE=on
