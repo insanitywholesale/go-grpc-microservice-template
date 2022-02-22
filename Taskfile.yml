@@ -6,9 +6,15 @@ tasks:
     - task: all
 
   all:
+    - task: checkformat
     - task: getdeps
     - task: protos
     - task: gorelease
+
+  checkformat:
+    desc: check if formatting is good
+    cmds:
+      - diff -u <(echo -n) <(gofmt -d ./)
 
   getdeps:
     desc: download dependencies
