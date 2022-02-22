@@ -15,7 +15,7 @@ stages:
   #- test
   #- build
 
-format:
+check:
   #stage: test
   stage: simple
   script:
