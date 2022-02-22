@@ -1,4 +1,4 @@
-.PHONY: getdeps protos gorelease
+.PHONY: checkformat getdeps protos gorelease
 
 checkformat:
 	diff -u <(echo -n) <(gofmt -d ./)
