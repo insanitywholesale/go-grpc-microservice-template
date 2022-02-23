@@ -1,11 +1,15 @@
+// protobuf syntax version
 syntax = "proto3";
 
+// name of package
 package hello.v1;
 option go_package = "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1";
 
+// import annotations required for grpc-gateway and openapi doc generation
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+// options for grpc-gateway
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
         title: "Hello";
@@ -27,25 +31,33 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     produces: "application/json";
 };
 
+// define service
 service HelloService {
+	// define a function of the service
 	rpc SayHello(Empty) returns (HelloResponse) {
+		// add options for mapping http request method and path
 		option (google.api.http) = {
 			get: "/api/v1/hello"
 		};
 	};
 	rpc SayCustomHello(HelloRequest) returns (HelloResponse) {
+		// add options for mapping http request method, path and path param
 		option (google.api.http) = {
 			get: "/api/v1/hello/{custom_word}"
 		};
 	};
 };
 
+// define messages the service takes as input and output
+// hello message with a custom word
 message HelloRequest {
 	string custom_word = 1;
 };
 
+// hello message with the full hello phrase
 message HelloResponse {
 	string hello_word = 1;
 };
 
+// protobuf doesn't allow specifying nothing so we define a message with nothing in it
 message Empty {};
