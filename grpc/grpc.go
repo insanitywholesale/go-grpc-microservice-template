@@ -6,6 +6,9 @@ import (
 )
 
 type Server struct {
+	// Required so unimplemented methods return error instead of causing compilation failure
+	// Source: https://stackoverflow.com/questions/69700899/grpc-error-about-missing-an-unimplemented-server-method
+	// Source: https://stackoverflow.com/questions/65079032/grpc-with-mustembedunimplemented-method
 	pb.UnimplementedHelloServiceServer
 }
 
