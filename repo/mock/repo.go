@@ -4,6 +4,9 @@ import (
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 )
 
+// Variable for hello request id
+var helloId = 0
+
 // Variable for an empty HelloRequest
 var emptyHelloRequest = &pb.HelloRequest{}
 
@@ -20,6 +23,8 @@ func NewMockRepo() (helloRepo, error) {
 
 // Implementation of StoreHello from HelloRepo interface
 func (helloRepo) StoreHello(hr *pb.HelloRequest) error {
+	hr.Id = helloId
+	helloId++
 	hellos = append(hellos, hr)
 	return nil
 }
