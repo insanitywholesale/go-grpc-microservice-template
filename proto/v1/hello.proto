@@ -61,6 +61,7 @@ message HelloRequest {
 // hello message with the full hello phrase
 message HelloResponse {
 	string hello_word = 1;
+	uint32 id = 2;
 };
 
 // protobuf doesn't allow specifying nothing so we define a message with nothing in it

@@ -117,6 +117,10 @@
       "properties": {
         "helloWord": {
           "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "hello message with the full hello phrase"
