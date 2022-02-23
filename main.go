@@ -61,7 +61,7 @@ func startRESTServer(grpcPort string, restPort string) {
 	log.Fatal(rest.RunGateway(grpcPort, restPort))
 }
 
-// TODO: this can likely be implemented in a better way e.g. in Server struct
+// TODO: should be moved into repo package
 func chooseRepo() models.HelloRepo {
 	mockrepo, _ := mock.NewMockRepo()
 	return mockrepo
