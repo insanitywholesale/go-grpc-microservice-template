@@ -22,7 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HelloServiceClient interface {
+	// sayhello which should return the phrase hello world
 	SayHello(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*HelloResponse, error)
+	// saycustomhello which should return the phrase hello and a custom word
 	SayCustomHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 }
 
@@ -56,7 +58,9 @@ func (c *helloServiceClient) SayCustomHello(ctx context.Context, in *HelloReques
 // All implementations must embed UnimplementedHelloServiceServer
 // for forward compatibility
 type HelloServiceServer interface {
+	// sayhello which should return the phrase hello world
 	SayHello(context.Context, *Empty) (*HelloResponse, error)
+	// saycustomhello which should return the phrase hello and a custom word
 	SayCustomHello(context.Context, *HelloRequest) (*HelloResponse, error)
 	mustEmbedUnimplementedHelloServiceServer()
 }

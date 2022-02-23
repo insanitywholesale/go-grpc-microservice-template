@@ -31,6 +31,7 @@
   "paths": {
     "/api/v1/hello": {
       "get": {
+        "summary": "sayhello which should return the phrase hello world",
         "operationId": "HelloService_SayHello",
         "responses": {
           "200": {
@@ -53,6 +54,7 @@
     },
     "/api/v1/hello/{customWord}": {
       "get": {
+        "summary": "saycustomhello which should return the phrase hello and a custom word",
         "operationId": "HelloService_SayCustomHello",
         "responses": {
           "200": {
@@ -116,7 +118,8 @@
         "helloWord": {
           "type": "string"
         }
-      }
+      },
+      "title": "hello message with the full hello phrase"
     }
   }
 }
