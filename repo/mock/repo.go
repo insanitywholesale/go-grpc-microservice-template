@@ -5,16 +5,16 @@ import (
 )
 
 // Variable for hello request id
-var helloId = 0
+var helloId uint32 = 0
 
-// Variable for an empty HelloRequest
-var emptyHelloRequest = &pb.HelloRequest{}
+// Variable for an empty HelloResponse
+var emptyHelloResponse = &pb.HelloResponse{}
 
 // Type implementing the HelloRepo interface
-type helloRepo []*pb.HelloRequest
+type helloRepo []*pb.HelloResponse
 
 // Variable of above type initialized with an empty slice
-var hellos helloRepo = []*pb.HelloRequest{}
+var hellos helloRepo = []*pb.HelloResponse{}
 
 // Function returning the initialized variable implementing HelloRepo interface
 func NewMockRepo() (helloRepo, error) {
@@ -22,7 +22,7 @@ func NewMockRepo() (helloRepo, error) {
 }
 
 // Implementation of StoreHello from HelloRepo interface
-func (helloRepo) StoreHello(hr *pb.HelloRequest) error {
+func (helloRepo) StoreHello(hr *pb.HelloResponse) error {
 	hr.Id = helloId
 	helloId++
 	hellos = append(hellos, hr)

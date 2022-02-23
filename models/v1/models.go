@@ -5,5 +5,5 @@ import (
 )
 
 type HelloRepo interface {
-	StoreHello(*pb.HelloRequest) error
+	StoreHello(*pb.HelloResponse) error
 }
