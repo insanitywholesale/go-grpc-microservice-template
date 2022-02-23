@@ -11,14 +11,11 @@ import (
 	"os"
 )
 
-// Global variables
-var (
-	grpcPort string
-	restPort string
-)
-
 // Function to determine what port the gRPC and HTTP servers will use
-func setupPorts() {
+func setupPorts() (string, string) {
+	// Variables for ports
+	var grpcPort string
+	var restPort string
 	// Get value environment variable
 	grpcPort = os.Getenv("HELLO_GRPC_PORT")
 	// If empty, default to 15200
@@ -29,10 +26,11 @@ func setupPorts() {
 	if restPort == "" {
 		restPort = "8080"
 	}
+	return grpcPort, restPort
 }
 
 // Function to set up and start the gRPC server
-func startGRPCServer() {
+func startGRPCServer(grpcPort string) {
 	// Create listener on gRPC port
 	listener, err := net.Listen("tcp", ":"+grpcPort)
 	if err != nil {
@@ -53,16 +51,16 @@ func startGRPCServer() {
 }
 
 // Function to set up and start the HTTP server
-func startRESTServer() {
+func startRESTServer(grpcPort string, restPort string) {
 	log.Println("REST server starting on port", restPort)
 	log.Fatal(rest.RunGateway(grpcPort, restPort))
 }
 
 func main() {
 	// Set up the ports that the servers will listen on
-	setupPorts()
+	grpcPort, restPort := setupPorts()
 	// Start the gRPC API server
-	go startGRPCServer()
+	go startGRPCServer(grpcPort)
 	// Start the REST API server
-	defer startRESTServer()
+	defer startRESTServer(grpcPort, restPort)
 }
