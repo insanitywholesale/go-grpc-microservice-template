@@ -2,7 +2,9 @@ package main
 
 import (
 	hellogrpc "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	pbv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/mock"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/rest"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -37,10 +39,13 @@ func startGRPCServer(grpcPort string) {
 		log.Fatalf("listen failed %v", err)
 	}
 
+	// Choose hellorepo
+	db := chooseRepo()
+
 	// Create gRPC server
 	grpcServer := grpc.NewServer()
 	// Register v1 HelloService gRPC server
-	pbv1.RegisterHelloServiceServer(grpcServer, hellogrpc.Server{})
+	pbv1.RegisterHelloServiceServer(grpcServer, hellogrpc.Server{DB: db})
 	// Enable reflection so the API can be discoverable by something like grpcurl
 	reflection.Register(grpcServer)
 	// Log the server starting as well as the port it is listening on
@@ -54,6 +59,12 @@ func startGRPCServer(grpcPort string) {
 func startRESTServer(grpcPort string, restPort string) {
 	log.Println("REST server starting on port", restPort)
 	log.Fatal(rest.RunGateway(grpcPort, restPort))
+}
+
+// TODO: this can likely be implemented in a better way e.g. in Server struct
+func chooseRepo() models.HelloRepo {
+	mockrepo, _ := mock.NewMockRepo()
+	return mockrepo
 }
 
 func main() {
