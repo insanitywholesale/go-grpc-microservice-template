@@ -9,11 +9,11 @@ import (
 	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
+	"net/http"
 )
 
-// TODO: make it return grpc.Server
 // Function to set up and start the gRPC server
-func startGRPCServer(listener net.Listener) {
+func createGRPCServer(listener net.Listener) *grpc.Server {
 	// Choose hellorepo
 	db := utils.ChooseRepo()
 	// Create gRPC server
@@ -30,14 +30,12 @@ func startGRPCServer(listener net.Listener) {
 		// Log the server starting as well as the port it is listening on
 		log.Println("gRPC server starting on port", port)
 	}
-	// Start the gRPC server
-	// If an error is returned, log the error and exit fatally
-	log.Fatal(grpcServer.Serve(listener))
+	// Create the gRPC server
+	return grpcServer
 }
 
-// TODO: make it return http.Server (also see rest package TODO)
 // Function to set up and start the HTTP server
-func startRESTServer(grpcPort string, listener net.Listener) {
+func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 	// Get port from listener and print it
 	port, err := utils.PortFromListener(listener)
 	if err != nil {
@@ -46,13 +44,12 @@ func startRESTServer(grpcPort string, listener net.Listener) {
 		// Log the server starting as well as the port it is listening on
 		log.Println("REST server starting on port", port)
 	}
-	// Start the grpc-gateway / REST server
-	// If an error is returned, log the error and exit fatally
+	// Create the grpc-gateway / REST server
 	restServer, err := rest.CreateGateway(grpcPort)
 	if err != nil {
 		log.Fatal("Failed creating grpc-gateway:", err)
 	}
-	log.Fatal(restServer.Serve(listener))
+	return restServer
 }
 
 func main() {
@@ -69,7 +66,9 @@ func main() {
 		log.Fatalf("REST listen failed %v", err)
 	}
 	// Start the gRPC API server
-	go startGRPCServer(grpcListener)
+	grpcServer := createGRPCServer(grpcListener)
+	go grpcServer.Serve(grpcListener)
 	// Start the REST API server
-	defer startRESTServer(grpcPort, restListener)
+	restServer := createRESTServer(grpcPort, restListener)
+	defer restServer.Serve(restListener)
 }
