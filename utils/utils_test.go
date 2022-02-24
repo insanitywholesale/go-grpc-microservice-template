@@ -29,7 +29,10 @@ func TestListenerFromPort(t *testing.T) {
 }
 
 func TestPortFromListener(t *testing.T) {
-	l, _ := ListenerFromPort("1984")
+	l, err := ListenerFromPort("1984")
+	if err != nil {
+		t.Fatal("Problem creating listener from port:", err)
+	}
 	defer l.Close()
 	port, err := PortFromListener(l)
 	if err != nil {
