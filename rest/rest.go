@@ -6,12 +6,10 @@ import (
 	"github.com/rs/cors"
 	gw "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"google.golang.org/grpc"
-	"net"
 	"net/http"
 )
 
-// TODO: make it return http.Server{Handler: handler} and listener
-func RunGateway(grpcport string, listener net.Listener) error {
+func CreateGateway(grpcport string) (*http.Server, error) {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -20,8 +18,8 @@ func RunGateway(grpcport string, listener net.Listener) error {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := gw.RegisterHelloServiceHandlerFromEndpoint(ctx, mux, ":"+grpcport, opts)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	handler := cors.Default().Handler(mux)
-	return http.Serve(listener, handler)
+	return &http.Server{Handler: handler}, nil
 }

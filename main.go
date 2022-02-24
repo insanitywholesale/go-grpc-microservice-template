@@ -46,9 +46,13 @@ func startRESTServer(grpcPort string, listener net.Listener) {
 		// Log the server starting as well as the port it is listening on
 		log.Println("REST server starting on port", port)
 	}
-	// Start the gRPC-gateway / REST server
+	// Start the grpc-gateway / REST server
 	// If an error is returned, log the error and exit fatally
-	log.Fatal(rest.RunGateway(grpcPort, listener))
+	restServer, err := rest.CreateGateway(grpcPort)
+	if err != nil {
+		log.Fatal("Failed creating grpc-gateway:", err)
+	}
+	log.Fatal(restServer.Serve(listener))
 }
 
 func main() {
