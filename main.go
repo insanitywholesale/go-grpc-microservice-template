@@ -11,6 +11,7 @@ import (
 	"net"
 )
 
+// TODO: make it return grpc.Server
 // Function to set up and start the gRPC server
 func startGRPCServer(listener net.Listener) {
 	// Choose hellorepo
@@ -34,6 +35,7 @@ func startGRPCServer(listener net.Listener) {
 	log.Fatal(grpcServer.Serve(listener))
 }
 
+// TODO: make it return http.Server (also see rest package TODO)
 // Function to set up and start the HTTP server
 func startRESTServer(grpcPort string, listener net.Listener) {
 	// Get port from listener and print it

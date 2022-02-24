@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// TODO: make it return http.Server{Handler: handler} and listener
 func RunGateway(grpcport string, listener net.Listener) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
