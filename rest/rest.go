@@ -6,10 +6,11 @@ import (
 	"github.com/rs/cors"
 	gw "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"google.golang.org/grpc"
+	"net"
 	"net/http"
 )
 
-func RunGateway(grpcport string, restport string) error {
+func RunGateway(grpcport string, listener net.Listener) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -21,5 +22,5 @@ func RunGateway(grpcport string, restport string) error {
 		return err
 	}
 	handler := cors.Default().Handler(mux)
-	return http.ListenAndServe(":"+restport, handler)
+	return http.Serve(listener, handler)
 }

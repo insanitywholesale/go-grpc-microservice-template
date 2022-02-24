@@ -18,3 +18,9 @@ func TestSetupPorts(t *testing.T) {
 		t.Fatal("Problem setting up REST port")
 	}
 }
+
+func TestStartGRPCServer(t *testing.T) {
+}
+
+func TestStartRESTServer(t *testing.T) {
+}
