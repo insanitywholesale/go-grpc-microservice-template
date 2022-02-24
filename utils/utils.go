@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/mock"
 	"net"
@@ -8,6 +9,12 @@ import (
 	"strconv"
 	"strings"
 )
+
+// Function to select data repository backend
+func ChooseRepo() models.HelloRepo {
+	mockrepo, _ := mock.NewMockRepo()
+	return mockrepo
+}
 
 // Function to determine what port the gRPC and HTTP servers will use
 func SetupPorts() (string, string) {
@@ -38,6 +45,9 @@ func ListenerFromPort(port string) (net.Listener, error) {
 }
 
 func PortFromListener(l net.Listener) (string, error) {
+	if l == nil {
+		return "", errors.New("Provided listener is nil")
+	}
 	addrSlice := strings.Split(l.Addr().String(), ":")
 	port := addrSlice[len(addrSlice)-1]
 	_, err := strconv.Atoi(port)
@@ -46,10 +56,4 @@ func PortFromListener(l net.Listener) (string, error) {
 		return "", err
 	}
 	return port, nil
-}
-
-// TODO: should be moved into repo package
-func ChooseRepo() models.HelloRepo {
-	mockrepo, _ := mock.NewMockRepo()
-	return mockrepo
 }
