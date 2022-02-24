@@ -17,6 +17,8 @@ func CreateGateway(grpcport string) (*http.Server, error) {
 	mux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{OrigName: true, EmitDefaults: true}))
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	// TODO: investiage switching to RegisterHelloServiceHandler for testability
+	//conn, err := grpc.DialContext(ctx, ":"+grpcPort, opts)
+	//err := gw.RegisterHelloServiceHandler(ctx, mux, conn)
 	err := gw.RegisterHelloServiceHandlerFromEndpoint(ctx, mux, ":"+grpcport, opts)
 	if err != nil {
 		return nil, err
