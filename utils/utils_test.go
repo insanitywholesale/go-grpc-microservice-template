@@ -25,13 +25,12 @@ func TestListenerFromPort(t *testing.T) {
 		t.Fatal("Problem creating listener from port:", err)
 	}
 	t.Log("Listener created:", l)
+	l.Close()
 }
 
 func TestPortFromListener(t *testing.T) {
-	// TODO: skip for now due to problem
-	t.Skip()
-	// TODO: fix this, causes panic if the check for nil in PortFromListener is not present
 	l, _ := ListenerFromPort("1984")
+	defer l.Close()
 	port, err := PortFromListener(l)
 	if err != nil {
 		t.Fatal("Problem extracting port from listener:", err)
