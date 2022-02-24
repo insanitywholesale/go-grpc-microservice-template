@@ -5,23 +5,18 @@ import (
 	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/mock"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 	"net"
 	"testing"
 )
 
-// TODO: should be moved into repo package
-func chooseRepo() models.HelloRepo {
-	mockrepo, _ := mock.NewMockRepo()
-	return mockrepo
-}
-
 func TestSayHello(t *testing.T) {
 	const bufsize = 1024 * 1024
 	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
-	pb.RegisterHelloServiceServer(s, Server{DB: chooseRepo()})
+	pb.RegisterHelloServiceServer(s, Server{DB: utils.ChooseRepo()})
 	go s.Serve(l)
 
 	ctx := context.Background()
@@ -48,7 +43,7 @@ func TestSayCustomHello(t *testing.T) {
 	const bufsize = 1024 * 1024
 	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
-	pb.RegisterHelloServiceServer(s, Server{DB: chooseRepo()})
+	pb.RegisterHelloServiceServer(s, Server{DB: utils.ChooseRepo()})
 	go s.Serve(l)
 
 	ctx := context.Background()
