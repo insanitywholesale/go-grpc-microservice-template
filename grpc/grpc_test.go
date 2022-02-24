@@ -2,9 +2,7 @@ package grpc
 
 import (
 	"context"
-	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
-	"gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/mock"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
