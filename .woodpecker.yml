@@ -1,0 +1,9 @@
+pipeline:
+  check:
+    image: golang
+    commands:
+      - go fmt
+      - go get
+      - go vet
+      - go build
+      - go test
