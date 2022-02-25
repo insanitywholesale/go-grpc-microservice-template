@@ -6,6 +6,7 @@ import (
 	"github.com/rs/cors"
 	gw "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
 	"net/http"
 )
 
