@@ -2,7 +2,7 @@ package rest
 
 import (
 	"context"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/rs/cors"
 	gw "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"google.golang.org/grpc"
