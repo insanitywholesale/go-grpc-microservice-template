@@ -11,12 +11,14 @@ import (
 
 func CreateGateway(endpoint string) (http.Handler, error) {
 	ctx := context.Background()
-
 	mux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{OrigName: true, EmitDefaults: true}))
+	// Create a client connection to the gRPC server
+	// The gateway acts as a client
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := gw.RegisterHelloServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 	if err != nil {
 		return nil, err
 	}
+	// Add CORS and return the HTTP handler
 	return cors.Default().Handler(mux), nil
 }
