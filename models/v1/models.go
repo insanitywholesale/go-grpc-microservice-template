@@ -10,5 +10,5 @@ type HelloRepo interface {
 
 type MyHello struct {
 	HelloWord string `json:"hello_word"`
-	Id uint32 `json:"id"`
+	Id        uint32 `json:"id"`
 }
