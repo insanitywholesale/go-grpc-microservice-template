@@ -4,11 +4,13 @@ import (
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
+	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	ggrpc "google.golang.org/grpc"
 	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"encoding/json"
 )
 
 func TestCreateGateway(t *testing.T) {
@@ -43,12 +45,15 @@ func TestCreateGateway(t *testing.T) {
 		t.Fatalf("Handler returned wrong status code: got %v want %v", statusCode, http.StatusOK)
 	}
 
-	// Expected response body
-	expected := `{"hello_word":"Hello World!","id":0}`
-	// Actual response body
-	got := rr.Body.String()
-	// Check if expectation matches reality
-	if got != expected {
-		t.Fatalf("handler returned unexpected body: got %v want %v", got, expected)
+	// Initialize empty MyHello
+	mh := &models.MyHello{}
+	// Response body
+	res := rr.Body.String()
+	t.Log("Response body:", res)
+	// Check if response body can be marshalled into MyHello
+	err = json.NewDecoder(rr.Body).Decode(mh)
+	if err != nil {
+		t.Fatal("Failed unmarshalling response into MyHello:", err)
 	}
+	t.Log("Unmarshalled response:", mh)
 }
