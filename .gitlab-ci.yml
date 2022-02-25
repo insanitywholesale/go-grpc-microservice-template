@@ -1,6 +1,6 @@
 # TODO: make better as seen here: https://developpaper.com/configuring-gitlab-ci-for-golang-project/
 # link to original: https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Go.gitlab-ci.yml
-image: golang:latest
+image: golang:1.17
 
 variables:
   REPO_NAME: gitlab.com/insanitywholesale/go-grpc-microservice-template
