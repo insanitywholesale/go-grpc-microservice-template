@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 	"net"
@@ -36,5 +37,18 @@ func TestCreateGRPCServer(t *testing.T) {
 }
 
 func TestStartRESTServer(t *testing.T) {
-	t.Skip()
+	const bufsize = 1024 * 1024
+	gl, shut := utils.CreateRandomListener()
+	defer shut()
+	gs := createGRPCServer(gl)
+	go gs.Serve(gl)
+
+	rl, shut := utils.CreateRandomListener()
+	defer shut()
+	gp, err := utils.PortFromListener(gl)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rs := createRESTServer(":"+gp, rl)
+	go rs.Serve(rl)
 }
