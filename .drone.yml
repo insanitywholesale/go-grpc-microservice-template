@@ -3,7 +3,7 @@ kind: pipeline
 name: default
 
 steps:
-  - name: go-grpc-microservice
+  - name: check
     image: golang
     commands:
       - go fmt
