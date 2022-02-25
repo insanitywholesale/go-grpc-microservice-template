@@ -25,6 +25,7 @@ func createGRPCServer(listener net.Listener) *grpc.Server {
 	// Get port from listener and print it
 	port, err := utils.PortFromListener(listener)
 	if err != nil {
+		// Error is non-fatal because listener does not necesssarily include a port
 		log.Println("Failed getting gRPC port from listener:", err)
 	} else {
 		// Log the server starting as well as the port it is listening on
@@ -39,17 +40,18 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 	// Get port from listener and print it
 	port, err := utils.PortFromListener(listener)
 	if err != nil {
+		// Error is non-fatal because listener does not necesssarily include a port
 		log.Println("Failed getting REST port from listener:", err)
 	} else {
 		// Log the server starting as well as the port it is listening on
 		log.Println("REST server starting on port", port)
 	}
 	// Create the grpc-gateway / REST server
-	restServer, err := rest.CreateGateway(grpcPort)
+	restHandler, err := rest.CreateGateway(grpcPort)
 	if err != nil {
 		log.Fatal("Failed creating grpc-gateway:", err)
 	}
-	return restServer
+	return &http.Server{Handler: restHandler}
 }
 
 func main() {
@@ -58,17 +60,18 @@ func main() {
 	// Create listener based on grpc port
 	grpcListener, err := utils.ListenerFromPort(grpcPort)
 	if err != nil {
-		log.Fatalf("gRPC listen failed %v", err)
+		log.Fatalf("Creating gRPC listener failed: %v", err)
 	}
 	// Create listener based on rest port
 	restListener, err := utils.ListenerFromPort(restPort)
 	if err != nil {
-		log.Fatalf("REST listen failed %v", err)
+		log.Fatalf("Creating REST listener failed: %v", err)
 	}
 	// Start the gRPC API server
 	grpcServer := createGRPCServer(grpcListener)
 	go grpcServer.Serve(grpcListener)
 	// Start the REST API server
-	restServer := createRESTServer(grpcPort, restListener)
+	// colon is prepended because we are supposed to pass the entire endpoint
+	restServer := createRESTServer(":"+grpcPort, restListener)
 	defer restServer.Serve(restListener)
 }

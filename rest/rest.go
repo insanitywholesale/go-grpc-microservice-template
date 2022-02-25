@@ -9,20 +9,14 @@ import (
 	"net/http"
 )
 
-func CreateGateway(grpcport string) (*http.Server, error) {
+func CreateGateway(endpoint string) (http.Handler, error) {
 	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
 
 	mux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{OrigName: true, EmitDefaults: true}))
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	// TODO: investiage switching to RegisterHelloServiceHandler for testability
-	//conn, err := grpc.DialContext(ctx, ":"+grpcPort, opts)
-	//err := gw.RegisterHelloServiceHandler(ctx, mux, conn)
-	err := gw.RegisterHelloServiceHandlerFromEndpoint(ctx, mux, ":"+grpcport, opts)
+	err := gw.RegisterHelloServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 	if err != nil {
 		return nil, err
 	}
-	handler := cors.Default().Handler(mux)
-	return &http.Server{Handler: handler}, nil
+	return cors.Default().Handler(mux), nil
 }
