@@ -37,7 +37,6 @@ func TestCreateGRPCServer(t *testing.T) {
 }
 
 func TestStartRESTServer(t *testing.T) {
-	const bufsize = 1024 * 1024
 	gl, shut := utils.CreateRandomListener()
 	defer shut()
 	gs := createGRPCServer(gl)

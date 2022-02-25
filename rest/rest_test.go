@@ -12,7 +12,6 @@ import (
 )
 
 func TestCreateGateway(t *testing.T) {
-	const bufsize = 1024 * 1024
 	l, shut := utils.CreateRandomListener()
 	defer shut()
 	s := ggrpc.NewServer()
