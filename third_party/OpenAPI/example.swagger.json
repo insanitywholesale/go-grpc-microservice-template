@@ -4,6 +4,11 @@
     "title": "example.proto",
     "version": "1.0"
   },
+  "tags": [
+    {
+      "name": "UserService"
+    }
+  ],
   "schemes": [
     "https"
   ],
@@ -95,14 +100,11 @@
     "protobufAny": {
       "type": "object",
       "properties": {
-        "typeUrl": {
+        "@type": {
           "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
         }
-      }
+      },
+      "additionalProperties": {}
     },
     "rpcStatus": {
       "type": "object",

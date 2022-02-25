@@ -6,7 +6,6 @@ import (
 	"github.com/rs/cors"
 	gw "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"net/http"
 )
 
@@ -17,7 +16,7 @@ func CreateGateway(endpoint string) (http.Handler, error) {
 	// Create a client connection to the gRPC server
 	// The gateway acts as a client
 	//opts := []grpc.DialOption{grpc.WithInsecure()}
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.Credentials())}
+	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := gw.RegisterHelloServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 	if err != nil {
 		return nil, err

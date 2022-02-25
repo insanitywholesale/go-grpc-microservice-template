@@ -6,14 +6,13 @@ checkformat:
 getdeps:
 	/bin/sh -c 'type protoc'
 	export GO111MODULE=on
-	#go get -d -v google.golang.org/protobuf/cmd/protoc-gen-go
-	#go get -d -v google.golang.org/grpc/cmd/protoc-gen-go-grpc
-	#go get -d -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway
-	#go get -d -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
 	go install -v google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install -v google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+
+generate:
+	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:latest generate
 
 protos:
 	protoc -I ./proto/ -I third_party/googleapis -I third_party/grpc-gateway \
