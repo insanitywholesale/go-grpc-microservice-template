@@ -3,6 +3,12 @@ name: buf.build/insanitywholesale/go-grpc-microservice-template
 build:
   roots:
     - proto
+breaking:
+  use:
+    - FILE
+lint:
+  use:
+    - DEFAULT
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/grpc-ecosystem/grpc-gateway
