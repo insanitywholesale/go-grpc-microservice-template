@@ -1,3 +1,7 @@
+#This is staying on v1beta1
+#If buf.yaml is bumped to v1, `build: roots: - proto` is not a thing so we replace it with the following.
+#When that's done, we get `proto/v1/hello.proto:9:8:proto/google/api/annotations.proto: does not exist` which is not good.
+#Can't find a solution as of now so this is not used.
 version: v1beta1
 name: buf.build/insanitywholesale/go-grpc-microservice-template
 build:
