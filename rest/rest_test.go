@@ -11,21 +11,9 @@ import (
 	"testing"
 )
 
-// Function to create listener with random open port
-func createListener() (l net.Listener, shut func()) {
-	l, err := net.Listen("tcp", ":0")
-	if err != nil {
-		panic(err)
-	}
-
-	return l, func() {
-		_ = l.Close()
-	}
-}
-
 func TestCreateGateway(t *testing.T) {
 	const bufsize = 1024 * 1024
-	l, shut := createListener()
+	l, shut := utils.CreateRandomListener()
 	defer shut()
 	s := ggrpc.NewServer()
 	pb.RegisterHelloServiceServer(s, grpc.Server{DB: utils.ChooseRepo()})
