@@ -13,7 +13,10 @@ RUN go install -v
 
 # run stage
 FROM busybox as run
+
 COPY --from=build /go/bin/go-grpc-microservice-template /go-grpc-microservice-template
+
 EXPOSE 15200
 EXPOSE 8080
+
 CMD ["/go-grpc-microservice-template"]
