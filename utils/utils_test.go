@@ -40,3 +40,16 @@ func TestPortFromListener(t *testing.T) {
 	}
 	t.Log("Port extracted:", port)
 }
+
+func TestCreateRandomListener(t *testing.T) {
+	l, shut := CreateRandomListener()
+
+	port, err := PortFromListener(l)
+	if err != nil {
+		t.Fatal("Problem extracting port from listener:", err)
+	}
+	t.Log("Port extracted:", port)
+
+	shut()
+	t.Log("Shut() succeeded")
+}
