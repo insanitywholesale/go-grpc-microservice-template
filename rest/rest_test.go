@@ -44,6 +44,7 @@ func TestCreateGateway(t *testing.T) {
 	if statusCode != http.StatusOK {
 		t.Fatalf("Handler returned wrong status code: got %v want %v", statusCode, http.StatusOK)
 	}
+	t.Log("Got status code 200 from /api/v1/hello")
 
 	// Initialize empty MyHello
 	mh := &models.MyHello{}
@@ -56,4 +57,38 @@ func TestCreateGateway(t *testing.T) {
 		t.Fatal("Failed unmarshalling response into MyHello:", err)
 	}
 	t.Log("Unmarshalled response:", mh)
+}
+
+func TestCreateDocsHandler(t *testing.T) {
+	l, shut := utils.CreateRandomListener()
+	defer shut()
+	s := ggrpc.NewServer()
+	pb.RegisterHelloServiceServer(s, grpc.Server{DB: utils.ChooseRepo()})
+	go s.Serve(l)
+
+	// Create ResponseRecorder
+	rr := httptest.NewRecorder()
+
+	// Create client request (httptest.NewRequest does server request)
+	req, err := http.NewRequest("GET", "/docs", nil)
+	if err != nil {
+		t.Fatal("Failed creating HTTP request:", err)
+	}
+
+	// Create the docs handler and get back the http.Handler
+	h, err := CreateDocsHandler()
+	if err != nil {
+		t.Fatal("Creating docs handler failed:", err)
+	}
+
+	// Run the server and send the request
+	h.ServeHTTP(rr, req)
+
+	// Get HTTP status code
+	statusCode := rr.Code
+	// Check status code
+	if statusCode != http.StatusOK {
+		t.Fatalf("Handler returned wrong status code: got %v want %v", statusCode, http.StatusOK)
+	}
+	t.Log("Got status code 200 from /docs")
 }
