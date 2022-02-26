@@ -4,11 +4,25 @@ import (
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/rs/cors"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/openapiv2"
 	gw "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/encoding/protojson"
+	"io/fs"
+	"mime"
 	"net/http"
 )
+
+// From: https://github.com/johanbrandhorst/grpc-gateway-boilerplate/blob/930554159e8c509132ae7072a5647ac4f7d9e43a/gateway/gateway.go
+func CreateDocsHandler() (http.Handler, error) {
+	mime.AddExtensionType(".svg", "image/svg+xml")
+	// Use subdirectory in embedded files
+	subFS, err := fs.Sub(openapiv2.OpenAPIDocsV1, "v1")
+	if err != nil {
+		return nil, err
+	}
+	return http.FileServer(http.FS(subFS)), nil
+}
 
 func CreateGateway(endpoint string) (http.Handler, error) {
 	ctx := context.Background()

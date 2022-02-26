@@ -10,6 +10,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"strings"
 )
 
 // Function to set up and start the gRPC server
@@ -51,7 +52,22 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 	if err != nil {
 		log.Fatal("Failed creating grpc-gateway:", err)
 	}
-	return &http.Server{Handler: restHandler}
+	docsHandler, err := rest.CreateDocsHandler()
+	if err != nil {
+		log.Fatal("Failed creating docs handler:", err)
+	}
+
+	return &http.Server{
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			println("path:", r.URL.Path)
+			// Forward to grpc-gateway
+			if strings.HasPrefix(r.URL.Path, "/api") {
+				restHandler.ServeHTTP(w, r)
+				return
+			}
+			docsHandler.ServeHTTP(w, r)
+		}),
+	}
 }
 
 func main() {
