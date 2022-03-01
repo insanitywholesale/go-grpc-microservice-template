@@ -3,7 +3,6 @@ package rest
 import (
 	"encoding/json"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
-	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	ggrpc "google.golang.org/grpc"
