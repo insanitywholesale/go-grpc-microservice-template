@@ -12,7 +12,7 @@ getdeps:
 	go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 
 generate:
-	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:latest generate
+	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:latest generate --timeout=5m30s
 
 protos:
 	protoc -I ./proto/ -I third_party/googleapis -I third_party/grpc-gateway \
