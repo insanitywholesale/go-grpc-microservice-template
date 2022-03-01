@@ -13,6 +13,11 @@ import (
 	"testing"
 )
 
+type testHelloResponse struct {
+	HelloWord string `json:"hello_word"`
+	Id        uint32 `json:"id"`
+}
+
 func TestCreateGateway(t *testing.T) {
 	l, shut := utils.CreateRandomListener()
 	defer shut()
@@ -46,15 +51,15 @@ func TestCreateGateway(t *testing.T) {
 	}
 	t.Log("Got status code 200 from /api/v1/hello")
 
-	// Initialize empty MyHello
-	mh := &models.MyHello{}
+	// Initialize empty testHelloResponse
+	mh := &testHelloResponse{}
 	// Response body
 	res := rr.Body.String()
 	t.Log("Response body:", res)
-	// Check if response body can be marshalled into MyHello
+	// Check if response body can be marshalled into testHelloResponse
 	err = json.NewDecoder(rr.Body).Decode(mh)
 	if err != nil {
-		t.Fatal("Failed unmarshalling response into MyHello:", err)
+		t.Fatal("Failed unmarshalling response into testHelloResponse:", err)
 	}
 	t.Log("Unmarshalled response:", mh)
 }
