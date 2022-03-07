@@ -1,8 +1,9 @@
 package mock
 
 import (
-	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"testing"
+
+	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 )
 
 func TestNewMockRepo(t *testing.T) {
