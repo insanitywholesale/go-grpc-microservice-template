@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+
 	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 )
@@ -17,12 +18,18 @@ type Server struct {
 
 func (s Server) SayHello(context.Context, *pb.Empty) (*pb.HelloResponse, error) {
 	hres := &pb.HelloResponse{HelloWord: "Hello World!"}
-	s.DB.StoreHello(hres)
+	err := s.DB.StoreHello(hres)
+	if err != nil {
+		return nil, err
+	}
 	return hres, nil
 }
 
 func (s Server) SayCustomHello(_ context.Context, hreq *pb.HelloRequest) (*pb.HelloResponse, error) {
 	hres := &pb.HelloResponse{HelloWord: "Hello " + hreq.CustomWord + "!"}
-	s.DB.StoreHello(hres)
+	err := s.DB.StoreHello(hres)
+	if err != nil {
+		return nil, err
+	}
 	return hres, nil
 }
