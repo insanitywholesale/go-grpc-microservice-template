@@ -61,7 +61,7 @@ func PortFromListener(l net.Listener) (string, error) {
 
 // Function to create listener with random open port for testing purposes
 func CreateRandomListener() (l net.Listener, shut func()) {
-	l, err := net.Listen("tcp", ":0")
+	l, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		panic(err)
 	}
