@@ -2,12 +2,13 @@ package utils
 
 import (
 	"errors"
-	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
-	"gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/mock"
 	"net"
 	"os"
 	"strconv"
 	"strings"
+
+	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/mock"
 )
 
 // Function to select data repository backend
@@ -46,7 +47,7 @@ func ListenerFromPort(port string) (net.Listener, error) {
 
 func PortFromListener(l net.Listener) (string, error) {
 	if l == nil {
-		return "", errors.New("Provided listener is nil")
+		return "", errors.New("provided listener is nil")
 	}
 	addrSlice := strings.Split(l.Addr().String(), ":")
 	port := addrSlice[len(addrSlice)-1]
