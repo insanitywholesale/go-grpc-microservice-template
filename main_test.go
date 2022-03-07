@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"net"
+	"testing"
+
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
-	"net"
-	"testing"
 )
 
 func TestCreateGRPCServer(t *testing.T) {
@@ -21,7 +23,7 @@ func TestCreateGRPCServer(t *testing.T) {
 		ctx,
 		"bufnet",
 		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return l.Dial() }),
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		t.Fatalf("failed to dial bufnet: %v", err)

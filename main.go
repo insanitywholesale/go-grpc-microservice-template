@@ -1,16 +1,17 @@
 package main
 
 import (
+	"log"
+	"net"
+	"net/http"
+	"strings"
+
 	hellogrpc "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
 	pbv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/rest"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"log"
-	"net"
-	"net/http"
-	"strings"
 )
 
 // Function to set up and start the gRPC server
