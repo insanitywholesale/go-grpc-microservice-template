@@ -89,9 +89,11 @@ func main() {
 	}
 	// Start the gRPC API server
 	grpcServer := createGRPCServer(grpcListener)
+	// TODO: fix golangci-lint errcheck by using errors channel like ctrlshiftv
 	go grpcServer.Serve(grpcListener)
 	// Start the REST API server
 	// colon is prepended because we are supposed to pass the entire endpoint
 	restServer := createRESTServer(":"+grpcPort, restListener)
+	// TODO: fix golangci-lint errcheck by using errors channel like ctrlshiftv
 	defer restServer.Serve(restListener)
 }
