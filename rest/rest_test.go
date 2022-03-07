@@ -2,19 +2,20 @@ package rest
 
 import (
 	"encoding/json"
-	"gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
-	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
-	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
-	ggrpc "google.golang.org/grpc"
 	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
+	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
+	ggrpc "google.golang.org/grpc"
 )
 
 type testHelloResponse struct {
 	HelloWord string `json:"hello_word"`
-	Id        uint32 `json:"id"`
+	ID        uint32 `json:"id"`
 }
 
 func TestCreateGateway(t *testing.T) {
