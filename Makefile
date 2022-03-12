@@ -11,10 +11,10 @@ getdeps:
 	go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 
-generate:
-	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:latest generate --timeout=5m30s
-
 protos:
+	buf generate --timeout=5m30s
+
+protoc-protos:
 	protoc -I ./proto/ -I third_party/googleapis -I third_party/grpc-gateway \
 	--go_out=./proto \
 	--go_opt=paths=source_relative \
