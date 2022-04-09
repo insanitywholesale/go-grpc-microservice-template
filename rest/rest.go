@@ -26,8 +26,7 @@ func CreateDocsHandler() (http.Handler, error) {
 	if err != nil {
 		return nil, err
 	}
-	// TODO: Works for /docs/ but doesn't work for /docs so fix it
-	return http.StripPrefix("/docs", http.FileServer(http.FS(subFS))), nil
+	return http.StripPrefix("/docs/", http.FileServer(http.FS(subFS))), nil
 }
 
 func CreateGateway(endpoint string) (http.Handler, error) {

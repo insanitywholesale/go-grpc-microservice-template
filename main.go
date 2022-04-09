@@ -67,8 +67,12 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 				return
 			}
 			if strings.HasPrefix(r.URL.Path, "/docs") {
-				docsHandler.ServeHTTP(w, r)
-				return
+				if r.URL.Path == "/docs" {
+					http.Redirect(w, r, "/docs/", http.StatusMovedPermanently)
+				} else {
+					docsHandler.ServeHTTP(w, r)
+					return
+				}
 			}
 		}),
 	}
