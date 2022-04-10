@@ -4,7 +4,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"strings"
 
 	hellogrpc "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
 	pbv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
@@ -58,24 +57,11 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 		log.Fatal("Failed creating docs handler:", err)
 	}
 
-	return &http.Server{
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			println("path:", r.URL.Path)
-			// Forward to grpc-gateway
-			if strings.HasPrefix(r.URL.Path, "/api") {
-				restHandler.ServeHTTP(w, r)
-				return
-			}
-			if strings.HasPrefix(r.URL.Path, "/docs") {
-				if r.URL.Path == "/docs" {
-					http.Redirect(w, r, "/docs/", http.StatusMovedPermanently)
-				} else {
-					docsHandler.ServeHTTP(w, r)
-					return
-				}
-			}
-		}),
-	}
+	mux := http.NewServeMux()
+	mux.Handle("/api/", restHandler)
+	mux.Handle("/docs/", http.StripPrefix("/docs/", docsHandler))
+
+	return &http.Server{Handler: mux}
 }
 
 func main() {

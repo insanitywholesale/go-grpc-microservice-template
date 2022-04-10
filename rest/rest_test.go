@@ -75,7 +75,7 @@ func TestCreateDocsHandler(t *testing.T) {
 	rr := httptest.NewRecorder()
 
 	// Create client request (httptest.NewRequest does server request)
-	req, err := http.NewRequest("GET", "/docs", nil)
+	req, err := http.NewRequest("GET", "/docs/index.html", nil)
 	if err != nil {
 		t.Fatal("Failed creating HTTP request:", err)
 	}
@@ -91,9 +91,12 @@ func TestCreateDocsHandler(t *testing.T) {
 
 	// Get HTTP status code
 	statusCode := rr.Code
-	// Check status code
+	// Check if status code is OK
 	if statusCode != http.StatusOK {
+		t.Logf("Handler returned unexpected status code: got %v want %v", statusCode, http.StatusOK)
+	}
+	// Check if status code is a bad one
+	if statusCode > 400 {
 		t.Fatalf("Handler returned wrong status code: got %v want %v", statusCode, http.StatusOK)
 	}
-	t.Log("Got status code 200 from /docs")
 }
