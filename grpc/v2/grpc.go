@@ -27,7 +27,12 @@ func (s Server) SayHello(context.Context, *emptypb.Empty) (*pb.HelloResponse, er
 }
 
 func (s Server) SayCustomHello(_ context.Context, hreq *pb.HelloRequest) (*pb.HelloResponse, error) {
-	hres := &pb.HelloResponse{HelloWord: "Hello " + hreq.CustomWord + "!"}
+	hres := &pb.HelloResponse{}
+	if hreq.ExclamationPoint {
+		hres = &pb.HelloResponse{HelloWord: "Hello " + hreq.CustomWord + "!"}
+	} else {
+		hres = &pb.HelloResponse{HelloWord: "Hello " + hreq.CustomWord}
+	}
 	err := s.DB.StoreHello(hres)
 	if err != nil {
 		return nil, err

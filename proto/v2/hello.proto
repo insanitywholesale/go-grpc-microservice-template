@@ -65,6 +65,3 @@ message HelloResponse {
 	uint32 id = 1;
 	string hello_word = 2;
 };
-
-// protobuf doesn't allow specifying nothing so we define a message with nothing in it
-message Empty {};

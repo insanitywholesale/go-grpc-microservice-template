@@ -67,6 +67,7 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 		log.Fatal("Failed creating docs handler v2:", err)
 	}
 
+	// Create router
 	mux := http.NewServeMux()
 	mux.Handle("/api/", restHandler)
 	mux.Handle("/docs/v1/", http.StripPrefix("/docs/v1", docsHandlerv1))

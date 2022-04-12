@@ -43,7 +43,7 @@ func NewPostgresRepo(url string) (models.HelloRepo, error) {
 
 func (r *postgresRepo) StoreHello(hr *pb.HelloResponse) error {
 	var id uint32
-	err := r.client.QueryRow(helloInsertQuery, hr.HelloWord).Scan(&id)
+	err := r.client.QueryRow(helloInsertQuery, hr.HelloWord, hr.ExclamationPoint).Scan(&id)
 	if err != nil {
 		return err
 	}
