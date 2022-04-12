@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Hello",
-    "version": "0.0.1",
+    "version": "0.0.0",
     "contact": {
       "name": "inherently",
       "url": "https://inherently.xyz",
