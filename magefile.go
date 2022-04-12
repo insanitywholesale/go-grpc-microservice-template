@@ -4,6 +4,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/magefile/mage/sh"
 )
 
@@ -31,7 +33,19 @@ func GetDeps() error {
 }
 
 func Protos() error {
-	return sh.Run("buf", "generate", "--timeout=5m30s")
+	err := sh.Run("buf", "generate", "--timeout=5m30s")
+	if err != nil {
+		dir, e := os.Getwd()
+		if e != nil {
+			return e
+		}
+		return sh.Run("docker", "run", "--rm",
+			"-v", dir+":/src",
+			"-w", "/src",
+			"bufbuild/buf:latest", "generate", "--timeout=5m30s",
+		)
+	}
+	return err
 }
 
 func ProtocProtos() error {
