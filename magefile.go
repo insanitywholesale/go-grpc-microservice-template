@@ -7,11 +7,15 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
+func CheckFormat() error {
+	return sh.Run("diff", "-u", "<(echo -n)", "<(gofmt -d ./)")
+}
+
 func Build() error {
-	if err := sh.Run("diff", "-u", "<(echo -n)", "<(gofmt -d ./)"); err != nil {
+	if err := CheckFormat(); err != nil {
 		return err
 	}
-	return sh.Run("go", "install", "./...")
+	return sh.Run("go", "install", "-v", "./...")
 }
 
 func GetDeps() error {
@@ -23,5 +27,28 @@ func GetDeps() error {
 		"google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest",
 		"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest",
 		"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest",
+	)
+}
+
+func Protos() error {
+	return sh.Run("buf", "generate", "--timeout=5m30s")
+}
+
+func ProtocProtos() error {
+	return sh.Run("protoc",
+		"-I", "./proto/",
+		"-I", "third_party/googleapis",
+		"-I", "third_party/grpc-gateway",
+		"--go_out=./proto",
+		"--go_opt=paths=source_relative",
+		"--go-grpc_out=./proto",
+		"--go-grpc_opt=paths=source_relative",
+		"--openapiv2_out=./openapiv2",
+		"--openapiv2_opt=logtostderr=true",
+		"--grpc-gateway_out=./proto",
+		"--grpc-gateway_opt=logtostderr=true",
+		"--grpc-gateway_opt=paths=source_relative",
+		"--grpc-gateway_opt=generate_unbound_methods=true",
+		"proto/v1/*.proto",
 	)
 }
