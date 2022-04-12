@@ -1,0 +1,70 @@
+// protobuf syntax version
+syntax = "proto3";
+
+// name of package
+package hello.v2;
+option go_package = "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v2";
+
+// import annotations required for grpc-gateway and openapi doc generation
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// options for grpc-gateway
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Hello";
+        version: "0.0.1";
+        contact: {
+            name: "inherently";
+            url: "https://inherently.xyz";
+            email: "pepitsizous@zoho.com";
+        };
+        license: {
+            name: "AGPLv3";
+            url: "https://gitlab.com/insanitywholesale/go-grpc-microservice-template/-/blob/main/LICENSE";
+        };
+    };
+
+    schemes: HTTP;
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
+// define the service
+service HelloService {
+	// define functions of the service
+
+	// sayhello which should return the phrase hello world
+	rpc SayHello(google.protobuf.Empty) returns (HelloResponse) {
+		// add options for mapping http request method and path
+		option (google.api.http) = {
+			get: "/api/v2/hello"
+		};
+	};
+	// saycustomhello which should return the phrase hello and a custom word
+	rpc SayCustomHello(HelloRequest) returns (HelloResponse) {
+		option (google.api.http) = {
+			post: "/api/v2/hello"
+			body: "*"
+		};
+	};
+};
+
+// define messages the service takes as input and output
+
+// hello message with a custom word
+message HelloRequest {
+	string custom_word = 1;
+	bool exclamation_point = 2;
+};
+
+// hello message with the full hello phrase
+message HelloResponse {
+	uint32 id = 1;
+	string hello_word = 2;
+};
+
+// protobuf doesn't allow specifying nothing so we define a message with nothing in it
+message Empty {};

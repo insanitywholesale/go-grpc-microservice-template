@@ -1,0 +1,141 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hello",
+    "version": "0.0.1",
+    "contact": {
+      "name": "inherently",
+      "url": "https://inherently.xyz",
+      "email": "pepitsizous@zoho.com"
+    },
+    "license": {
+      "name": "AGPLv3",
+      "url": "https://gitlab.com/insanitywholesale/go-grpc-microservice-template/-/blob/main/LICENSE"
+    }
+  },
+  "tags": [
+    {
+      "name": "HelloService"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v2/hello": {
+      "get": {
+        "summary": "sayhello which should return the phrase hello world",
+        "operationId": "HelloService_SayHello",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/hellov2HelloResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "HelloService"
+        ]
+      },
+      "post": {
+        "summary": "saycustomhello which should return the phrase hello and a custom word",
+        "operationId": "HelloService_SayCustomHello",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/hellov2HelloResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/hellov2HelloRequest"
+            }
+          }
+        ],
+        "tags": [
+          "HelloService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "hellov2HelloRequest": {
+      "type": "object",
+      "properties": {
+        "customWord": {
+          "type": "string"
+        },
+        "exclamationPoint": {
+          "type": "boolean"
+        }
+      },
+      "title": "hello message with a custom word"
+    },
+    "hellov2HelloResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "helloWord": {
+          "type": "string"
+        }
+      },
+      "title": "hello message with the full hello phrase"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
