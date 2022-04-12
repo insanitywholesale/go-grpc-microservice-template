@@ -29,3 +29,6 @@ Might want to actually namespace this but it works somewhat okay
 
 ### Repo
 Adjust repos to store and retrieve all info for HelloRequest/HelloResponse
+
+### Multiplexing
+Add the option to run both grpc and rest on the same port but explain why it's dumb
