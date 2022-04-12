@@ -37,7 +37,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1HelloResponse"
+              "$ref": "#/definitions/hellov1HelloResponse"
             }
           },
           "default": {
@@ -60,7 +60,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1HelloResponse"
+              "$ref": "#/definitions/hellov1HelloResponse"
             }
           },
           "default": {
@@ -85,6 +85,19 @@
     }
   },
   "definitions": {
+    "hellov1HelloResponse": {
+      "type": "object",
+      "properties": {
+        "helloWord": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "hello message with the full hello phrase"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -111,19 +124,6 @@
           }
         }
       }
-    },
-    "v1HelloResponse": {
-      "type": "object",
-      "properties": {
-        "helloWord": {
-          "type": "string"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "title": "hello message with the full hello phrase"
     }
   }
 }
