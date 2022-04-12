@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
+	grpc "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v1"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	ggrpc "google.golang.org/grpc"
@@ -22,7 +22,7 @@ func TestCreateGateway(t *testing.T) {
 	l, shut := utils.CreateRandomListener()
 	defer shut()
 	s := ggrpc.NewServer()
-	pb.RegisterHelloServiceServer(s, grpc.Server{DB: utils.ChooseRepo()})
+	pb.RegisterHelloServiceServer(s, grpc.Server{DB: utils.ChooseRepoV1()})
 	go s.Serve(l)
 
 	// Create ResponseRecorder
@@ -64,11 +64,11 @@ func TestCreateGateway(t *testing.T) {
 	t.Log("Unmarshalled response:", mh)
 }
 
-func TestCreateDocsHandler(t *testing.T) {
+func TestCreateDocsHandlerV1(t *testing.T) {
 	l, shut := utils.CreateRandomListener()
 	defer shut()
 	s := ggrpc.NewServer()
-	pb.RegisterHelloServiceServer(s, grpc.Server{DB: utils.ChooseRepo()})
+	pb.RegisterHelloServiceServer(s, grpc.Server{DB: utils.ChooseRepoV1()})
 	go s.Serve(l)
 
 	// Create ResponseRecorder
@@ -81,9 +81,42 @@ func TestCreateDocsHandler(t *testing.T) {
 	}
 
 	// Create the docs handler and get back the http.Handler
-	h, err := CreateDocsHandler()
+	h, err := CreateDocsHandlerV1()
 	if err != nil {
-		t.Fatal("Creating docs handler failed:", err)
+		t.Fatal("Creating docs handler v1 failed:", err)
+	}
+
+	// Run the server and send the request
+	h.ServeHTTP(rr, req)
+
+	// Get HTTP status code
+	statusCode := rr.Code
+	// Check if status code is OK
+	if statusCode != http.StatusOK {
+		t.Fatalf("Handler returned wrong status code: got %v want %v", statusCode, http.StatusOK)
+	}
+}
+
+func TestCreateDocsHandlerV2(t *testing.T) {
+	l, shut := utils.CreateRandomListener()
+	defer shut()
+	s := ggrpc.NewServer()
+	pb.RegisterHelloServiceServer(s, grpc.Server{DB: utils.ChooseRepoV1()})
+	go s.Serve(l)
+
+	// Create ResponseRecorder
+	rr := httptest.NewRecorder()
+
+	// Create client request (httptest.NewRequest does server request)
+	req, err := http.NewRequest("GET", "/hello.swagger.json", nil)
+	if err != nil {
+		t.Fatal("Failed creating HTTP request:", err)
+	}
+
+	// Create the docs handler and get back the http.Handler
+	h, err := CreateDocsHandlerV2()
+	if err != nil {
+		t.Fatal("Creating docs handler v2 failed:", err)
 	}
 
 	// Run the server and send the request

@@ -12,12 +12,20 @@ The more CI, the better
 - add `.travis.yml`
 - add whatever Tekton has
 
+## Deployment files
+Need a way to run the application
+- add `docker-compose.yml` for easier local testing
+- add raw kubernetes yaml
+- add kustomize yaml to demonstrate testing/prod
+
 ## Functionality
 Functionality is not yet complete
 
 ### Additional version demo
 Add later API versions to demonstrate that fields can be added but breaking changes need a full API version change.
 
-### API and documentation versioning
-If there is v1, v2, v3 of the API, make all versioned endpoints accessible as well as their corresponding docs.
-Additionally, make `/api` and `/docs` point to the latest version.
+### Rething REST api versioning
+Might want to actually namespace this but it works somewhat okay
+
+### Repo
+Adjust repos to store and retrieve all info for HelloRequest/HelloResponse

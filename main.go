@@ -5,8 +5,10 @@ import (
 	"net"
 	"net/http"
 
-	hellogrpc "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc"
+	hellogrpcv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v1"
+	hellogrpcv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v2"
 	pbv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
+	pbv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v2"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/rest"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"google.golang.org/grpc"
@@ -15,12 +17,16 @@ import (
 
 // Function to set up and start the gRPC server
 func createGRPCServer(listener net.Listener) *grpc.Server {
-	// Choose hellorepo
-	db := utils.ChooseRepo()
+	// Choose hellorepo v1
+	dbv1 := utils.ChooseRepoV1()
+	// Choose hellorepo v2
+	dbv2 := utils.ChooseRepoV2()
 	// Create gRPC server
 	grpcServer := grpc.NewServer()
 	// Register v1 HelloService gRPC server
-	pbv1.RegisterHelloServiceServer(grpcServer, hellogrpc.Server{DB: db})
+	pbv1.RegisterHelloServiceServer(grpcServer, hellogrpcv1.Server{DB: dbv1})
+	// Register v1 HelloService gRPC server
+	pbv2.RegisterHelloServiceServer(grpcServer, hellogrpcv2.Server{DB: dbv2})
 	// Enable reflection so the API can be discoverable by something like grpcurl
 	reflection.Register(grpcServer)
 	// Get port from listener and print it
@@ -52,14 +58,20 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 	if err != nil {
 		log.Fatal("Failed creating grpc-gateway:", err)
 	}
-	docsHandler, err := rest.CreateDocsHandler()
+	docsHandlerv1, err := rest.CreateDocsHandlerV1()
 	if err != nil {
-		log.Fatal("Failed creating docs handler:", err)
+		log.Fatal("Failed creating docs handler v1:", err)
+	}
+	docsHandlerv2, err := rest.CreateDocsHandlerV2()
+	if err != nil {
+		log.Fatal("Failed creating docs handler v2:", err)
 	}
 
 	mux := http.NewServeMux()
 	mux.Handle("/api/", restHandler)
-	mux.Handle("/docs/", http.StripPrefix("/docs/", docsHandler))
+	mux.Handle("/docs/v1/", http.StripPrefix("/docs/v1", docsHandlerv1))
+	mux.Handle("/docs/v2/", http.StripPrefix("/docs/v2", docsHandlerv2))
+	mux.Handle("/docs/", http.StripPrefix("/docs/", docsHandlerv2))
 
 	return &http.Server{Handler: mux}
 }

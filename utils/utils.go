@@ -7,13 +7,21 @@ import (
 	"strconv"
 	"strings"
 
-	models "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
-	"gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/mock"
+	modelsv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
+	modelsv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v2"
+	mockv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/v1/mock"
+	mockv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/v2/mock"
 )
 
-// Function to select data repository backend
-func ChooseRepo() models.HelloRepo {
-	mockrepo, _ := mock.NewMockRepo()
+// Function to select data repository backend v1
+func ChooseRepoV1() modelsv1.HelloRepo {
+	mockrepo, _ := mockv1.NewMockRepo()
+	return mockrepo
+}
+
+// Function to select data repository backend v2
+func ChooseRepoV2() modelsv2.HelloRepo {
+	mockrepo, _ := mockv2.NewMockRepo()
 	return mockrepo
 }
 

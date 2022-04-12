@@ -4,8 +4,13 @@ import (
 	"testing"
 )
 
-func TestChooseRepo(t *testing.T) {
-	repo := ChooseRepo()
+func TestChooseRepoV1(t *testing.T) {
+	repo := ChooseRepoV1()
+	t.Log("Repo chosen:", repo)
+}
+
+func TestChooseRepoV2(t *testing.T) {
+	repo := ChooseRepoV2()
 	t.Log("Repo chosen:", repo)
 }
 
