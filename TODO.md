@@ -24,7 +24,7 @@ Functionality is not yet complete
 ### Additional version demo
 Add later API versions to demonstrate that fields can be added but breaking changes need a full API version change.
 
-### Rething REST api versioning
+### Rethink REST api versioning
 Might want to actually namespace this but it works somewhat okay
 
 ### Repo
