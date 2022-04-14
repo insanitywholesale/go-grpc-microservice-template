@@ -32,13 +32,18 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     produces: "application/json";
 };
 
-// define the service
+// define the service(s)
 service HelloService {
 	// define functions of the service
 
+	// showallhellos which should return a list of all hellos
+	rpc ShowAllHellos(google.protobuf.Empty) returns (HellosResponse) {
+		option (google.api.http) = {
+			get: "/api/v2/hellos"
+		};
+	};
 	// sayhello which should return the phrase hello world
 	rpc SayHello(google.protobuf.Empty) returns (HelloResponse) {
-		// add options for mapping http request method and path
 		option (google.api.http) = {
 			get: "/api/v2/hello"
 		};
@@ -49,6 +54,12 @@ service HelloService {
 			post: "/api/v2/hello"
 			body: "*"
 		};
+		// TODO: fill in the extra options for the endpoint
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "a"
+			description: "b"
+			tags: "c"
+    	};
 	};
 };
 
@@ -58,6 +69,7 @@ service HelloService {
 message HelloRequest {
 	string custom_word = 1;
 	bool exclamation_point = 2;
+	//bool capital_h = 3;
 };
 
 // hello message with the full hello phrase
@@ -65,3 +77,8 @@ message HelloResponse {
 	uint32 id = 1;
 	string hello_word = 2;
 };
+
+// list of all hellos
+message HellosResponse {
+	repeated HelloResponse hellos = 1;
+}

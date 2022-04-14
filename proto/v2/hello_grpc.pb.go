@@ -19,6 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HelloServiceClient interface {
+	// showallhellos which should return a list of all hellos
+	ShowAllHellos(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HellosResponse, error)
 	// sayhello which should return the phrase hello world
 	SayHello(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HelloResponse, error)
 	// saycustomhello which should return the phrase hello and a custom word
@@ -31,6 +33,15 @@ type helloServiceClient struct {
 
 func NewHelloServiceClient(cc grpc.ClientConnInterface) HelloServiceClient {
 	return &helloServiceClient{cc}
+}
+
+func (c *helloServiceClient) ShowAllHellos(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HellosResponse, error) {
+	out := new(HellosResponse)
+	err := c.cc.Invoke(ctx, "/hello.v2.HelloService/ShowAllHellos", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *helloServiceClient) SayHello(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HelloResponse, error) {
@@ -55,6 +66,8 @@ func (c *helloServiceClient) SayCustomHello(ctx context.Context, in *HelloReques
 // All implementations must embed UnimplementedHelloServiceServer
 // for forward compatibility
 type HelloServiceServer interface {
+	// showallhellos which should return a list of all hellos
+	ShowAllHellos(context.Context, *emptypb.Empty) (*HellosResponse, error)
 	// sayhello which should return the phrase hello world
 	SayHello(context.Context, *emptypb.Empty) (*HelloResponse, error)
 	// saycustomhello which should return the phrase hello and a custom word
@@ -66,6 +79,9 @@ type HelloServiceServer interface {
 type UnimplementedHelloServiceServer struct {
 }
 
+func (UnimplementedHelloServiceServer) ShowAllHellos(context.Context, *emptypb.Empty) (*HellosResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShowAllHellos not implemented")
+}
 func (UnimplementedHelloServiceServer) SayHello(context.Context, *emptypb.Empty) (*HelloResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
@@ -83,6 +99,24 @@ type UnsafeHelloServiceServer interface {
 
 func RegisterHelloServiceServer(s grpc.ServiceRegistrar, srv HelloServiceServer) {
 	s.RegisterService(&HelloService_ServiceDesc, srv)
+}
+
+func _HelloService_ShowAllHellos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HelloServiceServer).ShowAllHellos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/hello.v2.HelloService/ShowAllHellos",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HelloServiceServer).ShowAllHellos(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _HelloService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -128,6 +162,10 @@ var HelloService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "hello.v2.HelloService",
 	HandlerType: (*HelloServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ShowAllHellos",
+			Handler:    _HelloService_ShowAllHellos_Handler,
+		},
 		{
 			MethodName: "SayHello",
 			Handler:    _HelloService_SayHello_Handler,

@@ -52,7 +52,8 @@
         ]
       },
       "post": {
-        "summary": "saycustomhello which should return the phrase hello and a custom word",
+        "summary": "a",
+        "description": "b",
         "operationId": "HelloService_SayCustomHello",
         "responses": {
           "200": {
@@ -78,6 +79,29 @@
             }
           }
         ],
+        "tags": [
+          "c"
+        ]
+      }
+    },
+    "/api/v2/hellos": {
+      "get": {
+        "summary": "showallhellos which should return a list of all hellos",
+        "operationId": "HelloService_ShowAllHellos",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2HellosResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
         "tags": [
           "HelloService"
         ]
@@ -136,6 +160,18 @@
           }
         }
       }
+    },
+    "v2HellosResponse": {
+      "type": "object",
+      "properties": {
+        "hellos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/hellov2HelloResponse"
+          }
+        }
+      },
+      "title": "list of all hellos"
     }
   }
 }

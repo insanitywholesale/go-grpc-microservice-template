@@ -31,20 +31,18 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     produces: "application/json";
 };
 
-// define the service
+// define the service(s)
 service HelloService {
 	// define functions of the service
 
 	// sayhello which should return the phrase hello world
 	rpc SayHello(Empty) returns (HelloResponse) {
-		// add options for mapping http request method and path
 		option (google.api.http) = {
 			get: "/api/v1/hello"
 		};
 	};
 	// saycustomhello which should return the phrase hello and a custom word
 	rpc SayCustomHello(HelloRequest) returns (HelloResponse) {
-		// add options for mapping http request method, path and path param
 		option (google.api.http) = {
 			get: "/api/v1/hello/{custom_word}"
 		};
