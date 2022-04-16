@@ -1,6 +1,7 @@
-package utils
+package utils_test
 
 import (
+	. "gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"testing"
 )
 

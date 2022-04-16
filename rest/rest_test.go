@@ -1,4 +1,4 @@
-package rest
+package rest_test
 
 import (
 	"encoding/json"
@@ -9,6 +9,7 @@ import (
 
 	grpc "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v1"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
+	. "gitlab.com/insanitywholesale/go-grpc-microservice-template/rest"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	ggrpc "google.golang.org/grpc"
 )

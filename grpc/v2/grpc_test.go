@@ -1,10 +1,11 @@
-package grpc
+package grpc_test
 
 import (
 	"context"
 	"net"
 	"testing"
 
+	. "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v2"
 	pb "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v2"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"google.golang.org/grpc"
