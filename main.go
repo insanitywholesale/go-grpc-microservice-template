@@ -90,13 +90,21 @@ func main() {
 	if err != nil {
 		log.Fatalf("Creating REST listener failed: %v", err)
 	}
-	// Start the gRPC API server
+	// Create and start the gRPC API server
 	grpcServer := createGRPCServer(grpcListener)
-	// TODO: fix golangci-lint errcheck by using errors channel like ctrlshiftv
-	go grpcServer.Serve(grpcListener)
-	// Start the REST API server
+	go func() {
+		err := grpcServer.Serve(grpcListener)
+		if err != nil {
+			log.Fatal("Failed starting gRPC server: %w", err)
+		}
+	}()
+	// Create and start the REST API server
 	// colon is prepended because we are supposed to pass the entire endpoint
 	restServer := createRESTServer(":"+grpcPort, restListener)
-	// TODO: fix golangci-lint errcheck by using errors channel like ctrlshiftv
-	defer restServer.Serve(restListener)
+	defer func() {
+		err := restServer.Serve(restListener)
+		if err != nil {
+			log.Fatal("Failed starting HTTP server: %w", err)
+		}
+	}()
 }
