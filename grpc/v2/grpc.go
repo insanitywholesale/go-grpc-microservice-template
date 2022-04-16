@@ -27,7 +27,7 @@ func (s Server) SayHello(context.Context, *emptypb.Empty) (*pb.HelloResponse, er
 }
 
 func (s Server) SayCustomHello(_ context.Context, hreq *pb.HelloRequest) (*pb.HelloResponse, error) {
-	hres := &pb.HelloResponse{}
+	var hres *pb.HelloResponse
 	if hreq.ExclamationPoint {
 		hres = &pb.HelloResponse{HelloWord: "Hello " + hreq.CustomWord + "!"}
 	} else {
