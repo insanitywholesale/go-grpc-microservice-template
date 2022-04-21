@@ -7,13 +7,19 @@ import (
 )
 
 func TestChooseRepoV1(t *testing.T) {
-	repo := ChooseRepoV1()
-	t.Log("Repo chosen:", repo)
+	repo, err := ChooseRepoV1()
+	if err != nil {
+		t.Error("Error creating v2 repo:", err)
+	}
+	t.Log("Repo v1 chosen:", repo)
 }
 
 func TestChooseRepoV2(t *testing.T) {
-	repo := ChooseRepoV2()
-	t.Log("Repo chosen:", repo)
+	repo, err := ChooseRepoV2()
+	if err != nil {
+		t.Error("Error creating v2 repo:", err)
+	}
+	t.Log("Repo v2 chosen:", repo)
 }
 
 func TestSetupPorts(t *testing.T) {

@@ -18,7 +18,8 @@ func TestCreateDocsHandlerV1(t *testing.T) {
 	l, shut := utils.CreateRandomListener()
 	defer shut()
 	s := ggrpc.NewServer()
-	pbv1.RegisterHelloServiceServer(s, grpcv1.Server{DB: utils.ChooseRepoV1()})
+	repo, _ := utils.ChooseRepoV1()
+	pbv1.RegisterHelloServiceServer(s, grpcv1.Server{DB: repo})
 	go s.Serve(l)
 
 	// Create ResponseRecorder
@@ -51,7 +52,8 @@ func TestCreateDocsHandlerV2(t *testing.T) {
 	l, shut := utils.CreateRandomListener()
 	defer shut()
 	s := ggrpc.NewServer()
-	pbv2.RegisterHelloServiceServer(s, grpcv2.Server{DB: utils.ChooseRepoV2()})
+	repo, _ := utils.ChooseRepoV2()
+	pbv2.RegisterHelloServiceServer(s, grpcv2.Server{DB: repo})
 	go s.Serve(l)
 
 	// Create ResponseRecorder

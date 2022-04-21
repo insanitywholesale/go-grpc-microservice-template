@@ -25,8 +25,10 @@ func TestCreateGateway(t *testing.T) {
 	l, shut := utils.CreateRandomListener()
 	defer shut()
 	s := ggrpc.NewServer()
-	pbv1.RegisterHelloServiceServer(s, grpcv1.Server{DB: utils.ChooseRepoV1()})
-	pbv2.RegisterHelloServiceServer(s, grpcv2.Server{DB: utils.ChooseRepoV2()})
+	repov1, _ := utils.ChooseRepoV1()
+	repov2, _ := utils.ChooseRepoV2()
+	pbv1.RegisterHelloServiceServer(s, grpcv1.Server{DB: repov1})
+	pbv2.RegisterHelloServiceServer(s, grpcv2.Server{DB: repov2})
 	go s.Serve(l)
 
 	// Create ResponseRecorder

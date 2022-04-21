@@ -18,7 +18,8 @@ func TestSayHello(t *testing.T) {
 	const bufsize = 1024 * 1024
 	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
-	pb.RegisterHelloServiceServer(s, Server{DB: utils.ChooseRepoV2()})
+	repo, _ := utils.ChooseRepoV2()
+	pb.RegisterHelloServiceServer(s, Server{DB: repo})
 	go s.Serve(l)
 
 	ctx := context.Background()
@@ -45,7 +46,8 @@ func TestSayCustomHello(t *testing.T) {
 	const bufsize = 1024 * 1024
 	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
-	pb.RegisterHelloServiceServer(s, Server{DB: utils.ChooseRepoV2()})
+	repo, _ := utils.ChooseRepoV2()
+	pb.RegisterHelloServiceServer(s, Server{DB: repo})
 	go s.Serve(l)
 
 	ctx := context.Background()
