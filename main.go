@@ -7,6 +7,7 @@ import (
 
 	hellogrpcv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v1"
 	hellogrpcv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v2"
+	"gitlab.com/insanitywholesale/go-grpc-microservice-template/openapiv2"
 	pbv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v1"
 	pbv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/proto/v2"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/rest"
@@ -58,11 +59,11 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 	if err != nil {
 		log.Fatal("Failed creating grpc-gateway:", err)
 	}
-	docsHandlerv1, err := rest.CreateDocsHandlerV1()
+	docsHandlerv1, err := openapiv2.CreateDocsHandlerV1()
 	if err != nil {
 		log.Fatal("Failed creating docs handler v1:", err)
 	}
-	docsHandlerv2, err := rest.CreateDocsHandlerV2()
+	docsHandlerv2, err := openapiv2.CreateDocsHandlerV2()
 	if err != nil {
 		log.Fatal("Failed creating docs handler v2:", err)
 	}
