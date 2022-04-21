@@ -1,8 +1,9 @@
 package utils_test
 
 import (
-	. "gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 	"testing"
+
+	. "gitlab.com/insanitywholesale/go-grpc-microservice-template/utils"
 )
 
 func TestChooseRepoV1(t *testing.T) {
