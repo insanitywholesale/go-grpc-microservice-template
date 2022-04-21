@@ -19,9 +19,15 @@ import (
 // Function to set up and start the gRPC server
 func createGRPCServer(listener net.Listener) *grpc.Server {
 	// Choose hellorepo v1
-	dbv1 := utils.ChooseRepoV1()
+	dbv1, err := utils.ChooseRepoV1()
+	if err != nil {
+		log.Fatal("Failed creating repository v1:", err)
+	}
 	// Choose hellorepo v2
-	dbv2 := utils.ChooseRepoV2()
+	dbv2, err := utils.ChooseRepoV2()
+	if err != nil {
+		log.Fatal("Failed creating repository v2:", err)
+	}
 	// Create gRPC server
 	grpcServer := grpc.NewServer()
 	// Register v1 HelloService gRPC server

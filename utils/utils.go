@@ -10,19 +10,59 @@ import (
 	modelsv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v1"
 	modelsv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/models/v2"
 	mockv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/v1/mock"
+	postgresv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/v1/postgres"
 	mockv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/v2/mock"
+	postgresv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/repo/v2/postgres"
 )
 
 // Function to select data repository backend v1
-func ChooseRepoV1() modelsv1.HelloRepo {
+func ChooseRepoV1() (modelsv1.HelloRepo, error) {
+	var dbstore modelsv1.HelloRepo
+	pgURL := os.Getenv("PG_URL")
+	if pgURL != "" {
+		if pgURL == "test" {
+			db, err := postgresv1.NewPostgresRepo("postgresql://tester:Apasswd@localhost:5432?sslmode=disable")
+			if err != nil {
+				return nil, err
+			}
+			dbstore = db
+		} else {
+			db, err := postgresv1.NewPostgresRepo(pgURL)
+			if err != nil {
+				return nil, err
+			}
+			dbstore = db
+		}
+		return dbstore, nil
+	}
 	mockrepo, _ := mockv1.NewMockRepo()
-	return mockrepo
+	dbstore = mockrepo
+	return dbstore, nil
 }
 
 // Function to select data repository backend v2
-func ChooseRepoV2() modelsv2.HelloRepo {
+func ChooseRepoV2() (modelsv2.HelloRepo, error) {
+	var dbstore modelsv2.HelloRepo
+	pgURL := os.Getenv("PG_URL")
+	if pgURL != "" {
+		if pgURL == "test" {
+			db, err := postgresv2.NewPostgresRepo("postgresql://tester:Apasswd@localhost:5432?sslmode=disable")
+			if err != nil {
+				return nil, err
+			}
+			dbstore = db
+		} else {
+			db, err := postgresv2.NewPostgresRepo(pgURL)
+			if err != nil {
+				return nil, err
+			}
+			dbstore = db
+		}
+		return dbstore, nil
+	}
 	mockrepo, _ := mockv2.NewMockRepo()
-	return mockrepo
+	dbstore = mockrepo
+	return dbstore, nil
 }
 
 // Function to determine what port the gRPC and HTTP servers will use
