@@ -52,8 +52,7 @@
         ]
       },
       "post": {
-        "summary": "a",
-        "description": "b",
+        "summary": "saycustomhello which should return the phrase hello and a custom word",
         "operationId": "HelloService_SayCustomHello",
         "responses": {
           "200": {
@@ -80,7 +79,7 @@
           }
         ],
         "tags": [
-          "c"
+          "HelloService"
         ]
       }
     },

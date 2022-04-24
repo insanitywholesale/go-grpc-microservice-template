@@ -54,12 +54,14 @@ service HelloService {
 			post: "/api/v2/hello"
 			body: "*"
 		};
+		/*
 		// TODO: fill in the extra options for the endpoint
 		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
 			summary: "a"
 			description: "b"
 			tags: "c"
     	};
+		*/
 	};
 };
 
