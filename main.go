@@ -77,9 +77,8 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 	// Create router
 	mux := http.NewServeMux()
 	mux.Handle("/api/", restHandler)
-	mux.Handle("/docs/v1/", http.StripPrefix("/docs/v1", docsHandlerv1))
-	mux.Handle("/docs/v2/", http.StripPrefix("/docs/v2", docsHandlerv2))
-	mux.Handle("/docs/", http.StripPrefix("/docs/", docsHandlerv2))
+	mux.Handle("/api/v1/docs/", http.StripPrefix("/api/v1/docs/", docsHandlerv1))
+	mux.Handle("/api/v2/docs/", http.StripPrefix("/api/v2/docs/", docsHandlerv2))
 
 	return &http.Server{Handler: mux}
 }
