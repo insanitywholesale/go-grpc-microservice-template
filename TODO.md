@@ -32,6 +32,11 @@ Need a way to run the application
 - add raw kubernetes yaml
 - add kustomize yaml to demonstrate testing/prod
 
+## Tests
+A lot of things don't have tests
+- real databases (currently the postgres implementations)
+- models/interfaces (no idea how to test these)
+
 ## Functionality
 Functionality is not yet complete
 
