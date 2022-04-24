@@ -1,6 +1,18 @@
 # TODOs
 Things left to be done before the project is in an okay state
 
+## Structure
+Consider modularizing the project further
+
+### Service/Logic layer
+A layer that handles the logic so it's decoupled from the grpc implementation
+
+#### Options
+The ways to achieve it that I can think of are
+- a struct with methods that implement the logic and will also hold the db which gets passed to it from the grpc server struct
+- a set of functions that implement parts of the logic and the grpc layer will handle db interaction
+- a set of functions that take the db as an argument and will be called from the grpc layer
+
 ## Documentation
 Since this is a showcase of a template there should be good documentation
 
@@ -41,7 +53,7 @@ A lot of things don't have tests
 Functionality is not yet complete
 
 ### Additional version demo
-Add later API versions to demonstrate that fields can be added but breaking changes need a full API version change.
+Add later API versions to demonstrate that fields can be added but breaking changes need a full API version change
 
 ### Rethink REST api versioning
 Might want to actually namespace this but it works somewhat okay
