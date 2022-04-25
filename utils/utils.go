@@ -87,7 +87,6 @@ func ListenerFromPort(port string) (net.Listener, error) {
 	// Create listener on provided port
 	l, err := net.Listen("tcp4", ":"+port)
 	if err != nil {
-		//TODO: wrap the error to be more explanatory
 		return nil, err
 	}
 	return l, nil
@@ -101,7 +100,6 @@ func PortFromListener(l net.Listener) (string, error) {
 	port := addrSlice[len(addrSlice)-1]
 	_, err := strconv.Atoi(port)
 	if err != nil {
-		//TODO: wrap the error to be more explanatory
 		return "", err
 	}
 	return port, nil

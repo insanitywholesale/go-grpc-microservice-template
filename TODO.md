@@ -49,6 +49,9 @@ A lot of things don't have tests
 - real databases (currently the postgres implementations)
 - models/interfaces (no idea how to test these)
 
+## Errors
+Wrap errors to add details at each step instead of doing `return nil, err`
+
 ## Functionality
 Functionality is not yet complete
 
