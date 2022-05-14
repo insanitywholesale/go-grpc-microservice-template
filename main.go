@@ -4,7 +4,9 @@ import (
 	"log"
 	"net"
 	"net/http"
+	_ "net/http/pprof"
 
+	"github.com/felixge/fgprof"
 	hellogrpcv1 "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v1"
 	hellogrpcv2 "gitlab.com/insanitywholesale/go-grpc-microservice-template/grpc/v2"
 	"gitlab.com/insanitywholesale/go-grpc-microservice-template/openapiv2"
@@ -75,12 +77,13 @@ func createRESTServer(grpcPort string, listener net.Listener) *http.Server {
 	}
 
 	// Create router
-	mux := http.NewServeMux()
-	mux.Handle("/api/", restHandler)
-	mux.Handle("/api/v1/docs/", http.StripPrefix("/api/v1/docs/", docsHandlerv1))
-	mux.Handle("/api/v2/docs/", http.StripPrefix("/api/v2/docs/", docsHandlerv2))
+	http.DefaultServeMux.Handle("/api/", restHandler)
+	http.DefaultServeMux.Handle("/api/v1/docs/", http.StripPrefix("/api/v1/docs/", docsHandlerv1))
+	http.DefaultServeMux.Handle("/api/v2/docs/", http.StripPrefix("/api/v2/docs/", docsHandlerv2))
+	http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
 
-	return &http.Server{Handler: mux}
+	//return &http.Server{Handler: http.DefaultServeMux}
+	return &http.Server{}
 }
 
 func main() {
