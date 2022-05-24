@@ -66,3 +66,7 @@ Adjust repos to store and retrieve all info for HelloRequest/HelloResponse
 
 ### Multiplexing
 Add the option to run both grpc and rest on the same port but explain why it's dumb
+
+### Standalone server
+Add function CreateListenerFromPortAndAddress in `utils` to be able to create a listener from a user-supplied address.
+Also add an env var or two (`HELLO_GRPC_ADDRESS`, `HELLO_REST_ADDRESS`) and maybe a CLI too to run with that user-supplied address
