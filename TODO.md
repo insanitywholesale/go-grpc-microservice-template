@@ -55,6 +55,9 @@ Wrap errors to add details at each step instead of doing `return nil, err`
 ## Functionality
 Functionality is not yet complete
 
+### Replace Empty gRPC message
+If we want to accept something other than Empty there will be problems in the future so to avoid this replace it with a HelloFilter message or something
+
 ### Additional version demo
 Add later API versions to demonstrate that fields can be added but breaking changes need a full API version change
 
