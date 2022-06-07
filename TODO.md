@@ -27,11 +27,6 @@ By far the most complicated thing here is the internal structure
 ### Environment variables
 Create a table of environment variables used throughout the project with a description and default values
 
-## Make-type files
-For every sufficiently popular language eventually there exists a Makefile replacement
-- finish `magefile.go`
-- bring `Makefile`, `Taskfile.yml`, `magefile.go` to parity when it comes to naming and functionality
-
 ## CI-type files
 The more CI, the better
 - add `Jenkinsfile`

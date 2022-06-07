@@ -65,4 +65,10 @@ func ProtocProtos() error {
 		"--grpc-gateway_opt=generate_unbound_methods=true",
 		"proto/v1/*.proto",
 	)
+
+func GoRelease() error {
+	return sh.Run(
+		"go install -v github.com/goreleaser/goreleaser@latest",
+		"goreleaser --snapshot --skip-publish --rm-dist",
+	)
 }
